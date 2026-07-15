@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إلى جميلة قلبي 🌸</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:ital@0;1&family=Cairo:wght@300;400;600&display=swap');
+        
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle, #fff0f3 0%, #f7d6db 100%);
+            font-family: 'Cairo', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* تأثير الخلفية المتساقطة للورود الناعمة */
+        .petals-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* الجواب والمغلف */
+        .envelope-wrapper {
+            position: relative;
+            width: 350px;
+            height: 250px;
+            background-color: #f4d06f; /* لون المغلف الداخلي */
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            cursor: pointer;
+            z-index: 5;
+            transition: transform 0.5s ease;
+        }
+
+        .envelope-wrapper:hover {
+            transform: translateY(-5px);
+        }
+
+        /* غطاء الجواب */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-left: 175px solid transparent;
+            border-right: 175px solid transparent;
+            border-top: 130px solid #ddb854; /* لون الغطاء */
+            transform-origin: top;
+            transition: transform 0.5s ease 0.3s;
+            z-index: 7;
+        }
+
+        .envelope-front {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-left: 175px solid #e2c062;
+            border-right: 175px solid #e2c062;
+            border-bottom: 125px solid #d4b251;
+            border-top: 125px solid transparent;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            z-index: 6;
+        }
+
+        /* الختم الشمعي */
+        .wax-seal {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            background-color: #c1121f;
+            border-radius: 50%;
+            top: 100px;
+            left: calc(50% - 27.5px);
+            z-index: 8;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fdf0d5;
+            font-size: 20px;
+            transition: transform 0.5s ease;
+        }
+
+        /* كارت الرسالة المخفي بالداخل */
+        .letter-card {
+            position: absolute;
+            background: #fffdf9;
+            width: 320px;
+            height: 450px;
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            top: 10px;
+            left: calc(50% - 160px);
+            z-index: 2;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(0);
+            opacity: 0;
+            text-align: center;
+            border: 1px solid #eae2b7;
+        }
+
+        /* الحالات عند فتح الجواب */
+        .envelope-wrapper.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 2;
+        }
+
+        .envelope-wrapper.open .wax-seal {
+            transform: scale(0);
+        }
+
+        .envelope-wrapper.open + .letter-card {
+            transform: translateY(-250px);
+            opacity: 1;
+            z-index: 10;
+        }
+
+        /* محتوى الجواب الشيك */
+        .letter-card h2 {
+            font-family: 'Amiri', serif;
+            font-size: 26px;
+            color: #780000;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .letter-card p {
+            font-size: 15px;
+            color: #669bbc;
+            line-height: 1.8;
+            color: #495057;
+            margin-bottom: 25px;
+        }
+
+        /* معرض صور بسيط بالداخل (تقدر تبدل الصور بـ لينكات صوركم) */
+        .image-placeholder {
+            width: 100%;
+            height: 150px;
+            background: #fdf0d5;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed #f5cac3;
+        }
+
+        .image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 8px 22px;
+            border-radius: 20px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-accept {
+            background-color: #780000;
+            color: white;
+        }
+
+        .btn-accept:hover {
+            background-color: #c1121f;
+            transform: scale(1.05);
+        }
+
+        .btn-deny {
+            background-color: #f7d6db;
+            color: #780000;
+        }
+
+        /* رسالة النجاح والصلح */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 240, 243, 0.95);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+
+        .success-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .success-overlay h1 {
+            font-family: 'Amiri', serif;
+            font-size: 32px;
+            color: #c1121f;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="petals-container" id="petals"></div>
+
+    <!-- المغلف -->
+    <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+        <div class="envelope-flap"></div>
+        <div class="envelope-front"></div>
+        <div class="wax-seal">❤</div>
+    </div>
+
+    <!-- كارت الرسالة الشيك المخبأ بالداخل -->
+    <div class="letter-card" id="letter">
+        <h2>يا جميلة قلبي ✨</h2>
+        
+        <!-- تقدر تبدل رابط الصورة دي بأي صورة ليكم سوا لو حابب -->
+        <div class="image-placeholder">
+            <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=500&auto=format&fit=crop" alt="وردة">
+        </div>
+
+        <p>
+            الكون بيضلم في عيني لما بشوفك زعلانة مني.. <br>
+            أنا ميرضينيش أبداً إن خاطرك الجميل ده يتكدر بسببي. <br>
+            حقك على قلبي، ومستعد أعمل أي حاجة تراضيكِ.
+        </p>
+
+        <div class="buttons">
+            <button class="btn btn-accept" onclick="showLove()">صافية يا يوسف 🌸</button>
+            <button class="btn btn-deny" id="no-btn" onmouseover="escapeBtn()">لسه شوية ⏳</button>
+        </div>
+    </div>
+
+    <!-- شاشة النهاية الراقية للصلح -->
+    <div class="success-overlay" id="success">
+        <h1>شكراً لقلبك الأبيض الطيب ❤</h1>
+        <p style="font-size: 18px; color: #780000;">بوعدك الضحكة دي متمشيش أبداً.. دمتِ لي شيئاً جميلاً لا ينتهي.</p>
+        <span style="font-size: 50px;">🌸✨</span>
+    </div>
+
+    <script>
+        // فتح الجواب بسلاسة
+        function openEnvelope() {
+            document.getElementById('envelope').classList.add('open');
+        }
+
+        // هروب الزرار الراقي (يتحرك بذكاء داخل حدود الكارت)
+        function escapeBtn() {
+            const noBtn = document.getElementById('no-btn');
+            const letter = document.getElementById('letter');
+            
+            const cardRect = letter.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+            
+            const maxX = cardRect.width - btnRect.width - 40;
+            const maxY = cardRect.height - btnRect.height - 100;
+
+            const randomX = Math.floor(Math.random() * maxX) - (maxX / 2);
+            const randomY = Math.floor(Math.random() * maxY) - (maxY / 2) + 120; // تعديل الارتفاع ليبقى في مساحة مريحة
+
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        // عند قبول الصلح تظهر شاشة النهاية الشيك
+        function showLove() {
+            document.getElementById('success').classList.add('show');
+        }
+
+        // توليد تأثير تساقط ورود ناعم في الخلفية
+        function createPetals() {
+            const container = document.getElementById('petals');
+            for (let i = 0; i < 15; i++) {
+                const petal = document.createElement('div');
+                petal.style.position = 'absolute';
+                petal.style.color = '#ffccd5';
+                petal.style.fontSize = Math.random() * 15 + 10 + 'px';
+                petal.innerHTML = '🌸';
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.top = Math.random() * -50 + 'px';
+                petal.style.opacity = Math.random() * 0.7 + 0.3;
+                petal.style.animation = `fall ${Math.random() * 5 + 5}s linear infinite`;
+                
+                container.appendChild(petal);
+            }
+        }
+
+        // إضافة حركة تساقط الورود بالـ CSS برمجياً
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fall {
+                to {
+                    transform: translateY(105vh) rotate(360deg);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        createPetals();
+    </script>
+</body>
+</html>
